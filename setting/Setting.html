@@ -1,0 +1,89 @@
+<div style="width:100%;height:auto;">
+	<table style="width:100%;" cellspacing="0">
+		<colgroup>
+			<col width="187px" />
+			<col width="auto" />
+		</colgroup>
+		<tbody>
+			<tr>
+				<td>
+					<span class="jimu-ellipsis">${nls.locatorUrl}</span>
+				</td>
+				<td class="locator-td">
+					<input data-dojo-attach-point="locatorUrl" data-dojo-type="jimu/dijit/ServiceURLInput"
+					data-dojo-attach-props="trim:true" type="text" style="width:100%;" placeHolder="${_locatorUrl}" />
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<span style="margin:10px 0 5px 0;display:inline-block;font-weight:bold;">${nls.geocoderOptions}</span>
+	<table style="width:100%;" cellspacing="0">
+		<tbody>
+			<tr>
+				<td style="width:50%;" class="auto-complete-td" data-dojo-attach-point="autoCompleteTd">
+					<span>${nls.autoComplete}</span>
+				</td>
+				<td style="width:50%;">
+					<table style="width:100%;" cellspacing="0">
+						<tbody>
+							<tr>
+								<td style="width:200px;">
+									<span class="search-delay">${nls.searchDelay}</span>
+								</td>
+								<td style="width:auto;">
+									<input data-dojo-attach-point="searchDelay" data-dojo-type="dijit/form/NumberSpinner" data-dojo-props='required:true,value:350,smallDelta:1,largeDelta:10,constraints:{min:10},intermediateChanges:true' type="text" style="width:220px;" />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:50%;">
+					<table style="width:100%;" cellspacing="0">
+						<tbody>
+							<tr>
+								<td style="width:200px;">
+									<span class="jimu-ellipsis">${nls.maxLocations}</span>
+								</td>
+								<td style="width:auto;">
+									<input data-dojo-attach-point="maxLocations" data-dojo-type="dijit/form/NumberSpinner" data-dojo-props='required:true,value:6,smallDelta:1,largeDelta:1,constraints:{min:1},intermediateChanges:true' type="text" style="width:220px;" />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+				<td style="width:50%;">
+					<table style="width:100%;" cellspacing="0">
+						<tbody>
+							<tr>
+								<td style="width:200px;">
+									<span class="min-characters jimu-ellipsis">${nls.minCharacters}</span>
+								</td>
+								<td style="width:auto;">
+									<input data-dojo-attach-point="minCharacters" data-dojo-type="dijit/form/NumberSpinner" data-dojo-props='required:true,value:3,smallDelta:1,largeDelta:1,constraints:{min:3},intermediateChanges:true' type="text" style="width:220px;" />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<table style="width:100%;" cellspacing="0">
+						<tbody>
+							<tr>
+								<td style="width:200px;">
+									<span>${nls.placeholder}</span>
+								</td>
+								<td style="width:auto;">
+									<input data-dojo-attach-point="placeholder" data-dojo-type="dijit/form/ValidationTextBox" type="text" style="width:220px;" />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

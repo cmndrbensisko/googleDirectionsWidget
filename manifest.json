@@ -1,0 +1,10 @@
+{
+  "name": "Google Directions",
+  "platform": "HTML",
+  "version": "1.4",
+  "wabVersion": "1.4",
+  "author": "Esri R&D Center Beijing and Adam Drackley (adam.drackley@gmail.com)",
+  "description": "",
+  "copyright": "",
+  "license": "http://www.apache.org/licenses/LICENSE-2.0"
+}
