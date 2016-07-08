@@ -123,6 +123,7 @@ define([
         this._preProcessConfig().then(lang.hitch(this, function(){
           var routeParams = new RouteParameters();
           var routeOptions = this.config.routeOptions;
+          var _myLocator = new Locator(this.config.searchOptions.sources[0].locator.url);
           if(routeOptions){
             if(routeOptions.directionsLanguage){
               routeParams.directionsLanguage = routeOptions.directionsLanguage;
@@ -140,35 +141,62 @@ define([
           var options = {
             map: this.map,
             searchOptions: this.config.searchOptions,
-            routeParams: routeParams,
-            routeTaskUrl: this.config.routeTaskUrl,
             dragging: true,
-            showClearButton: true
+            maxStops: 2,
+            autoSolve: false,
+            showClearButton: true,
+            showTravelModesOption: false,
+            routeParams: routeParams,
+            routeTaskUrl: this.config.routeTaskUrl
           };
-
-          if(this.config.trafficLayerUrl){
-            this._trafficLayer = new ArcGISDynamicMapServiceLayer(this.config.trafficLayerUrl);
-            options.trafficLayer = this._trafficLayer;
-            options.traffic = true;
-          }else{
-            options.traffic = false;
-          }
-
-          if(this.config.travelModesUrl){
-            options.travelModesServiceUrl = this.config.travelModesUrl;
-          }
 
           this._dijitDirections = new Directions(options);
           html.place(this._dijitDirections.domNode, this.directionController);
           this._dijitDirections.startup();
 
+          this._dijitDirections.stops=[];
+          this._dijitDirections.maxStopsReached = false;
+          this._dijitDirections.autoSolve = false;
+          this._dijitDirections.showClearButton = true;
+          this._dijitDirections.showTravelModesOption = false;
+
           this.own(on(this._dijitDirections,
                      'directions-start',
                      lang.hitch(this, this._getGoogle)));
 
+          var incr = 0
+          var activeInput = 1;
+          dojo.query('.searchInput',this._dijitDirections.domNode).forEach(lang.hitch(this,function(inputBox){
+            dojo.attr(inputBox,"incr", incr)
+            incr+=1;
+            this.own(on(inputBox,"click",lang.hitch(this,function(evt){
+              activeInput = parseInt(dojo.attr(evt.target, "incr"))
+            })))
+          }))
+          this.own()
+
+          this.own(_myLocator.on("location-to-address-complete", lang.hitch(this,function(evt) {
+            if (evt.address) {
+              var address = evt.address;
+              //this._dijitDirections.addStop({"name":evt.address.address.SingleKey,"extent": this._dijitDirections.map.extent,"feature":{"geometry": {"x": esri.geometry.xyToLngLat(evt.address.location.x,evt.address.location.y)[0], "y": esri.geometry.xyToLngLat(evt.address.location.x,evt.address.location.y)[1]}, "attributes":{"Score":evt.address.score,"Addr_Type":evt.address.address.Loc_name}}})
+              if (this._dijitDirections.stops.length < 2){
+                this._dijitDirections.addStop(evt.address.address.SingleKey)
+                //map.refresh();
+              }else{
+                this._dijitDirections.updateStop(evt.address.address.SingleKey, activeInput)
+                //map.refresh();
+              }
+              //this._dijitDirections.addStop(evt.address.location);
+            }
+          })));
           //this.own(on(this._dijitDirections,
           //           'directions-finish',
           //           lang.hitch(this, this._onDirectionsFinish)));
+          this.own(on(this.map,"click",lang.hitch(this,function(evt){
+            //console.log('la')
+              //this._dijitDirections.addStop(evt.mapPoint,this._dijitDirections.stopNum)
+              _myLocator.locationToAddress(esri.geometry.webMercatorToGeographic(evt.mapPoint), 100)
+          })))
 
           this.own(on(this._dijitDirections,
                       'map-click-active',
